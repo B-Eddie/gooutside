@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Time to Go Outside!</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #f0f8ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .container {
+      max-width: 800px;
+      padding: 40px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    h1 {
+      color: #2c7a51;
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+    
+    .message {
+      font-size: 1.5em;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    
+    .suggestions {
+      text-align: left;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+    
+    .suggestions h2 {
+      color: #2c7a51;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .suggestions ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .suggestions li {
+      margin: 15px 0;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .suggestions li:hover {
+      transform: translateX(10px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      background-color: #e9ecef;
+    }
+    
+    .timer {
+      font-size: 2em;
+      color: #e74c3c;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    
+    .motivation {
+      font-style: italic;
+      color: #555;
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Time to Go Outside! 🌞</h1>
+    <div class="message">
+      <p>You've reached your screen time limit.</p>
+      <p>Take a break and enjoy the outdoors!</p>
+    </div>
+    
+    <div class="motivation">
+      "The best way to get rid of a temptation is to yield to it." - Oscar Wilde
+    </div>
+    
+    <div class="suggestions">
+      <h2>Some ideas for outdoor activities:</h2>
+      <ul>
+        <li>Take a walk in the park</li>
+        <li>Go for a bike ride</li>
+        <li>Have a picnic</li>
+        <li>Play with your pet</li>
+        <li>Do some gardening</li>
+        <li>Go for a hike</li>
+        <li>Play a sport</li>
+        <li>Take photographs of nature</li>
+        <li>Have a conversation with someone face-to-face</li>
+        <li>Read a book outside</li>
+      </ul>
+    </div>
+    
+    <div class="timer" id="timeElapsed">
+      Time spent on screens: <span id="elapsedTime">0:00:00</span>
+    </div>
+  </div>
+  
+  <script>
+    // Calculate and display elapsed time
+    function updateElapsedTime() {
+      chrome.storage.local.get(['startTime'], function(data) {
+        if (data.startTime) {
+          const now = Date.now();
+          const elapsed = now - data.startTime;
+          
+          const hours = Math.floor(elapsed / (60 * 60 * 1000));
+          const minutes = Math.floor((elapsed % (60 * 60 * 1000)) / (60 * 1000));
+          const seconds = Math.floor((elapsed % (60 * 1000)) / 1000);
+          
+          document.getElementById('elapsedTime').textContent = 
+            `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+      });
+    }
+    
+    // Update elapsed time every second
+    updateElapsedTime();
+    setInterval(updateElapsedTime, 1000);
+  </script>
+</body>
+</html> 
