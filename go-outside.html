@@ -1,143 +1,502 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Time to Go Outside!</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background-color: #f0f8ff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-      background-size: cover;
-      background-position: center;
-    }
-    
-    .container {
-      max-width: 800px;
-      padding: 40px;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-    
-    h1 {
-      color: #2c3e50;
-      font-size: 3em;
-      margin-bottom: 20px;
-    }
-    
-    .message {
-      font-size: 1.5em;
-      color: #34495e;
-      margin-bottom: 30px;
-      line-height: 1.6;
-    }
-    
-    .suggestions {
-      text-align: left;
-      margin-top: 40px;
-    }
-    
-    .suggestions h2 {
-      color: #3498db;
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    
-    .suggestions ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    
-    .suggestions li {
-      margin: 15px 0;
-      padding: 15px;
-      background-color: #ecf0f1;
-      border-radius: 8px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      font-size: 1.2em;
-    }
-    
-    .suggestions li:hover {
-      transform: translateX(10px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      background-color: #d5e8f7;
-    }
-    
-    .timer {
-      font-size: 2em;
-      color: #e74c3c;
-      margin: 20px 0;
-      font-weight: bold;
-    }
-    
-    .motivation {
-      font-style: italic;
-      color: #7f8c8d;
-      margin-top: 30px;
-      font-size: 1.2em;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Time to Go Outside! 🌞</h1>
-    <div class="message">
-      <p>You've reached your screen time limit.</p>
-      <p>Take a break and enjoy the outdoors!</p>
+  <head>
+    <title>Time to Go Outside!</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background-color: #f0f8ff;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.8),
+            rgba(255, 255, 255, 0.8)
+          ),
+          url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .container {
+        max-width: 800px;
+        padding: 40px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      h1 {
+        color: #2c3e50;
+        font-size: 3em;
+        margin-bottom: 20px;
+      }
+
+      .message {
+        font-size: 1.5em;
+        color: #34495e;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .suggestions {
+        text-align: left;
+        margin-top: 40px;
+      }
+
+      .suggestions h2 {
+        color: #3498db;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .suggestions ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .suggestions li {
+        margin: 15px 0;
+        padding: 15px;
+        background-color: #ecf0f1;
+        border-radius: 8px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        font-size: 1.2em;
+      }
+
+      .suggestions li:hover {
+        transform: translateX(10px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background-color: #d5e8f7;
+      }
+
+      .timer {
+        font-size: 2em;
+        color: #e74c3c;
+        margin: 20px 0;
+        font-weight: bold;
+      }
+
+      .motivation {
+        font-style: italic;
+        color: #7f8c8d;
+        margin-top: 30px;
+        font-size: 1.2em;
+      }
+
+      .upload-section {
+        margin: 30px auto;
+        padding: 20px;
+        border: 3px dashed #3498db;
+        border-radius: 15px;
+        background-color: #f8fdff;
+      }
+
+      .camera-button,
+      .upload-button {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 30px;
+        font-size: 1.2em;
+        margin: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .camera-button:hover,
+      .upload-button:hover {
+        background-color: #27ae60;
+        transform: scale(1.05);
+      }
+
+      .camera-button:disabled,
+      .upload-button:disabled {
+        background-color: #95a5a6;
+        cursor: not-allowed;
+      }
+
+      #camera-preview {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 15px;
+        display: none;
+      }
+
+      .captured-image {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 15px;
+        display: none;
+      }
+
+      .gallery {
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-gap: 15px;
+      }
+
+      .gallery-item {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        height: 150px;
+        transition: transform 0.3s;
+      }
+
+      .gallery-item:hover {
+        transform: scale(1.05);
+      }
+
+      .gallery-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .status-message {
+        font-weight: bold;
+        margin: 15px 0;
+      }
+
+      .success {
+        color: #2ecc71;
+      }
+
+      .error {
+        color: #e74c3c;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #3498db;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Time to Go Outside! 🌞</h1>
+      <div class="message">
+        <p>You've reached your screen time limit.</p>
+        <p>Take a break and enjoy the outdoors!</p>
+      </div>
+
+      <div class="timer" id="timer">Time to go outside!</div>
+
+      <div class="upload-section">
+        <h2>Prove you're outside to continue browsing</h2>
+        <p>Take a photo of yourself in nature to unlock your browsing</p>
+
+        <button id="camera-button" class="camera-button">Open Camera</button>
+        <input
+          type="file"
+          id="file-input"
+          accept="image/*"
+          style="display: none"
+        />
+        <video id="camera-preview" autoplay playsinline></video>
+        <canvas id="photo-canvas" style="display: none"></canvas>
+        <img id="captured-image" class="captured-image" alt="Captured image" />
+
+        <div id="camera-controls" style="display: none">
+          <button id="take-photo-button" class="upload-button">
+            Take Photo
+          </button>
+          <button
+            id="retake-photo-button"
+            class="upload-button"
+            style="display: none"
+          >
+            Retake Photo
+          </button>
+          <button
+            id="submit-photo-button"
+            class="upload-button"
+            style="display: none"
+          >
+            Submit Photo
+          </button>
+        </div>
+
+        <div id="status-message" class="status-message"></div>
+      </div>
+
+      <div class="suggestions">
+        <h2>Some ideas for outdoor activities:</h2>
+        <ul>
+          <li>Take a walk in the park</li>
+          <li>Go for a bike ride</li>
+          <li>Have a picnic</li>
+          <li>Play with your pet</li>
+          <li>Do some gardening</li>
+          <li>Go for a hike</li>
+          <li>Play outdoor sports</li>
+          <li>Visit a local attraction</li>
+          <li>Take photographs of nature</li>
+          <li>Have a conversation with someone face-to-face</li>
+        </ul>
+      </div>
+
+      <h2>Your Outdoor Photo Gallery</h2>
+      <div id="gallery" class="gallery">
+        <!-- Gallery images will be loaded here -->
+      </div>
+
+      <div class="motivation">
+        <p>
+          "The best way to get started is to quit talking and begin doing." -
+          Walt Disney
+        </p>
+      </div>
     </div>
-    
-    <div class="timer" id="timer">Time to go outside!</div>
-    
-    <div class="suggestions">
-      <h2>Some ideas for outdoor activities:</h2>
-      <ul>
-        <li>Take a walk in the park</li>
-        <li>Go for a bike ride</li>
-        <li>Have a picnic</li>
-        <li>Play with your pet</li>
-        <li>Do some gardening</li>
-        <li>Go for a hike</li>
-        <li>Play outdoor sports</li>
-        <li>Visit a local attraction</li>
-        <li>Take photographs of nature</li>
-        <li>Have a conversation with someone face-to-face</li>
-      </ul>
-    </div>
-    
-    <div class="motivation">
-      <p>"The best way to get started is to quit talking and begin doing." - Walt Disney</p>
-    </div>
-  </div>
-  
-  <script>
-    // Add a simple animation to the timer
-    const timerElement = document.getElementById('timer');
-    const messages = [
-      "Time to go outside!",
-      "Step away from the screen!",
-      "Nature is calling!",
-      "Fresh air awaits!",
-      "Your eyes need a break!",
-      "The world is waiting!"
-    ];
-    
-    let messageIndex = 0;
-    
-    setInterval(() => {
-      timerElement.textContent = messages[messageIndex];
-      messageIndex = (messageIndex + 1) % messages.length;
-    }, 3000);
-  </script>
-</body>
-</html> 
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      // Import Firebase modules
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+      import {
+        getStorage,
+        ref,
+        uploadString,
+        getDownloadURL,
+        listAll,
+      } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAR2EDRnAzOc_nRrwD1kcUX68aOHLTNgMc",
+        authDomain: "go-outside-b7486.firebaseapp.com",
+        projectId: "go-outside-b7486",
+        storageBucket: "go-outside-b7486.firebasestorage.app",
+        messagingSenderId: "458485076262",
+        appId: "1:458485076262:web:2ee5cd31cc0ed680a9f1e7",
+        measurementId: "G-8T3149KV8C",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const storage = getStorage(app);
+      const db = getFirestore(app);
+
+      // DOM elements
+      const cameraButton = document.getElementById("camera-button");
+      const fileInput = document.getElementById("file-input");
+      const cameraPreview = document.getElementById("camera-preview");
+      const photoCanvas = document.getElementById("photo-canvas");
+      const capturedImage = document.getElementById("captured-image");
+      const cameraControls = document.getElementById("camera-controls");
+      const takePhotoButton = document.getElementById("take-photo-button");
+      const retakePhotoButton = document.getElementById("retake-photo-button");
+      const submitPhotoButton = document.getElementById("submit-photo-button");
+      const statusMessage = document.getElementById("status-message");
+      const gallery = document.getElementById("gallery");
+
+      let stream = null;
+      let photoData = null;
+
+      // Timer animation
+      const timerElement = document.getElementById("timer");
+      const messages = [
+        "Time to go outside!",
+        "Step away from the screen!",
+        "Nature is calling!",
+        "Fresh air awaits!",
+        "Your eyes need a break!",
+        "The world is waiting!",
+      ];
+
+      let messageIndex = 0;
+      setInterval(() => {
+        timerElement.textContent = messages[messageIndex];
+        messageIndex = (messageIndex + 1) % messages.length;
+      }, 3000);
+
+      // Load gallery images
+      async function loadGallery() {
+        try {
+          // List items in storage
+          const imagesRef = ref(storage, "outdoor_photos");
+          const imagesList = await listAll(imagesRef);
+
+          gallery.innerHTML = ""; // Clear gallery
+
+          // Handle case of no images
+          if (imagesList.items.length === 0) {
+            gallery.innerHTML = "<p>No outdoor photos yet. Take some!</p>";
+            return;
+          }
+
+          // Process each image
+          const promises = imagesList.items.map(async (item) => {
+            const url = await getDownloadURL(item);
+            return createGalleryItem(url);
+          });
+
+          await Promise.all(promises);
+        } catch (error) {
+          console.error("Error loading gallery:", error);
+        }
+      }
+
+      // Create gallery items
+      function createGalleryItem(url) {
+        const item = document.createElement("div");
+        item.className = "gallery-item";
+
+        const img = document.createElement("img");
+        img.src = url;
+        img.className = "gallery-image";
+        img.alt = "Outdoor photo";
+
+        item.appendChild(img);
+        gallery.appendChild(item);
+      }
+
+      // Open camera
+      cameraButton.addEventListener("click", async () => {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" },
+          });
+
+          cameraPreview.srcObject = stream;
+          cameraPreview.style.display = "block";
+          cameraControls.style.display = "block";
+          cameraButton.style.display = "none";
+        } catch (error) {
+          console.error("Error accessing camera:", error);
+          statusMessage.textContent =
+            "Could not access camera. Please check permissions.";
+          statusMessage.className = "status-message error";
+
+          // Fallback to file input
+          fileInput.style.display = "block";
+          fileInput.addEventListener("change", handleFileSelect);
+        }
+      });
+
+      // Handle file selection (fallback method)
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          capturedImage.src = e.target.result;
+          capturedImage.style.display = "block";
+          photoData = e.target.result;
+          submitPhotoButton.style.display = "inline-block";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // Take photo
+      takePhotoButton.addEventListener("click", () => {
+        // Set canvas dimensions to match the video stream
+        const width = cameraPreview.videoWidth;
+        const height = cameraPreview.videoHeight;
+        photoCanvas.width = width;
+        photoCanvas.height = height;
+
+        // Capture the current video frame to canvas
+        const context = photoCanvas.getContext("2d");
+        context.drawImage(cameraPreview, 0, 0, width, height);
+
+        // Get the data URL from canvas
+        photoData = photoCanvas.toDataURL("image/jpeg");
+        capturedImage.src = photoData;
+        capturedImage.style.display = "block";
+        cameraPreview.style.display = "none";
+        takePhotoButton.style.display = "none";
+        retakePhotoButton.style.display = "inline-block";
+        submitPhotoButton.style.display = "inline-block";
+      });
+
+      // Retake photo
+      retakePhotoButton.addEventListener("click", () => {
+        cameraPreview.style.display = "block";
+        capturedImage.style.display = "none";
+        takePhotoButton.style.display = "inline-block";
+        retakePhotoButton.style.display = "none";
+        submitPhotoButton.style.display = "none";
+        photoData = null;
+      });
+
+      // Submit photo
+      submitPhotoButton.addEventListener("click", async () => {
+        if (!photoData) {
+          statusMessage.textContent = "No photo to submit.";
+          statusMessage.className = "status-message error";
+          return;
+        }
+
+        try {
+          statusMessage.innerHTML =
+            'Analyzing photo... <span class="loading"></span>';
+          statusMessage.className = "status-message";
+
+          // Send to background script for upload and AI analysis
+          chrome.runtime.sendMessage(
+            {
+              action: "uploadPhoto",
+              photoData: photoData,
+            },
+            (response) => {
+              if (response && response.success) {
+                statusMessage.textContent = "Great! You can continue browsing.";
+                statusMessage.className = "status-message success";
+
+                // Reload gallery with new image
+                loadGallery();
+
+                // Close this page after 3 seconds
+                setTimeout(() => {
+                  window.close();
+                }, 3000);
+              } else {
+                statusMessage.textContent =
+                  response?.error ||
+                  "Failed to verify outdoor location. Please try another photo.";
+                statusMessage.className = "status-message error";
+              }
+            }
+          );
+        } catch (error) {
+          console.error("Error uploading photo:", error);
+          statusMessage.textContent =
+            "Error uploading photo. Please try again.";
+          statusMessage.className = "status-message error";
+        }
+      });
+
+      // Load gallery when page loads
+      document.addEventListener("DOMContentLoaded", loadGallery);
+    </script>
+  </body>
+</html>
