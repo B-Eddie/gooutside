@@ -1,40 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bee Movie Screen Time Manager</title>
+  <title>Screen Time Manager</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <div class="bee-header">
-      <span class="bee-emoji">🐝</span>
-      <h1>Bee Movie Screen Time</h1>
-      <span class="bee-emoji">🐝</span>
-    </div>
-    
-    <div class="bee-quote">
-      "According to all known laws of aviation, there is no way a bee should be able to fly."
-    </div>
-    
+    <h1>Screen Time Manager</h1>
     <div class="time-input">
       <label for="hours">Hours:</label>
       <input type="number" id="hours" min="0" max="24" value="2">
       <label for="minutes">Minutes:</label>
       <input type="number" id="minutes" min="0" max="59" value="0">
     </div>
-    
-    <button id="setLimit">Set Buzz Time</button>
-    
+    <button id="setLimit">Set Time Limit</button>
     <div class="status">
-      <p>Honey time remaining: <span id="timeRemaining">--:--</span></p>
-    </div>
-    
-    <div class="bee-footer">
-      <div class="bee-flight-path">
-        <span class="flying-bee">🐝</span>
-      </div>
+      <p>Time remaining: <span id="timeRemaining">--:--</span></p>
     </div>
   </div>
   <script src="popup.js"></script>
 </body>
-</html>
+</html> 
