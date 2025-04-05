@@ -120,7 +120,31 @@ document.addEventListener('DOMContentLoaded', function() {
       if (data.timeLimit && data.startTime) {
         updateTimeRemaining(data.timeLimit, data.startTime);
       }
-    });
-  }, 1000);
+    })
+  }, 1000)
+
+  // Add a random flying bee
+  function addRandomBee() {
+    const container = document.querySelector(".container")
+    const bee = document.createElement("span")
+    bee.textContent = "🐝"
+    bee.className = "flying-bee"
+    bee.style.top = Math.random() * 100 + "%"
+    bee.style.animationDuration = 5 + Math.random() * 5 + "s"
+    bee.style.animationDelay = Math.random() * 2 + "s"
+
+    container.appendChild(bee)
+
+    // Remove the bee after animation completes
+    setTimeout(() => {
+      if (bee.parentNode) {
+        container.removeChild(bee)
+      }
+    }, 10000)
+  }
+
+  // Add a bee every 5 seconds
+  setInterval(addRandomBee, 5000)
+  addRandomBee() // Add one immediately
+})
 }); 
->>>>>>> parent of db44183 (bee aah)
