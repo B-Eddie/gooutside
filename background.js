@@ -1,20 +1,40 @@
-// Global variables to track time limit
+// Global variables
 let timeLimit = null;
 let startTime = null;
-let isRedirecting = false;
 let goOutsideUrl = null;
 
-// Initialize the extension
+// Initialize when extension is installed or updated
 chrome.runtime.onInstalled.addListener(() => {
+  console.log('Extension installed/updated');
+  
   // Reset any existing time limit
   chrome.storage.local.remove(['timeLimit', 'startTime']);
   timeLimit = null;
   startTime = null;
-  isRedirecting = false;
   
   // Pre-calculate the go-outside URL
   goOutsideUrl = chrome.runtime.getURL('go-outside.html');
-  console.log('Extension installed, go-outside URL:', goOutsideUrl);
+  console.log('Go outside URL:', goOutsideUrl);
+  
+  // Create the alarm
+  chrome.alarms.create('checkTimeLimit', { periodInMinutes: 0.05 }); // Check every 3 seconds
+});
+
+// Load saved time limit when extension starts
+chrome.storage.local.get(['timeLimit', 'startTime'], (data) => {
+  if (data.timeLimit && data.startTime) {
+    timeLimit = data.timeLimit;
+    startTime = data.startTime;
+    console.log('Loaded saved time limit:', timeLimit, 'Start time:', startTime);
+    
+    // Check if time limit has already been reached
+    const now = Date.now();
+    const elapsed = now - startTime;
+    if (elapsed >= timeLimit) {
+      console.log('Time limit already reached, redirecting tabs');
+      redirectAllTabs();
+    }
+  }
 });
 
 // Listen for messages from popup
@@ -24,7 +44,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'setTimeLimit') {
     timeLimit = message.timeLimit;
     startTime = message.startTime;
-    isRedirecting = false;
     
     // Save to storage for persistence
     chrome.storage.local.set({
@@ -43,20 +62,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
-// Check time limit every second
-setInterval(checkTimeLimit, 1000);
+// Listen for alarm
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'checkTimeLimit') {
+    checkTimeLimit();
+  }
+});
 
 function checkTimeLimit() {
-  if (!timeLimit || !startTime || isRedirecting) return;
+  if (!timeLimit || !startTime) return;
 
-  const now = Date.now();
-  const elapsed = now - startTime;
-  
-  if (elapsed >= timeLimit) {
-    console.log('Time limit reached! Redirecting tabs...');
-    isRedirecting = true;
-    redirectAllTabs();
-  }
+  chrome.storage.local.get(['timeLimit', 'startTime'], (data) => {
+    // Use the most recent values from storage
+    const currentTimeLimit = data.timeLimit || timeLimit;
+    const currentStartTime = data.startTime || startTime;
+    
+    const now = Date.now();
+    const elapsed = now - currentStartTime;
+    
+    if (elapsed >= currentTimeLimit) {
+      console.log('Time limit reached! Redirecting tabs...');
+      redirectAllTabs();
+    }
+  });
 }
 
 function redirectAllTabs() {
@@ -89,13 +117,7 @@ function redirectAllTabs() {
       
       // Use a more direct approach to redirect
       try {
-        chrome.tabs.update(tab.id, { url: goOutsideUrl }, (updatedTab) => {
-          if (chrome.runtime.lastError) {
-            console.error('Error redirecting tab:', chrome.runtime.lastError);
-          } else {
-            console.log('Tab redirected successfully:', updatedTab.id);
-          }
-        });
+        chrome.tabs.update(tab.id, { url: goOutsideUrl });
       } catch (error) {
         console.error('Exception redirecting tab:', error);
       }
@@ -103,17 +125,7 @@ function redirectAllTabs() {
   });
 }
 
-// Check time limit when a tab is activated
-chrome.tabs.onActivated.addListener(() => {
-  checkTimeLimit();
-});
-
-// Check time limit when a tab is updated
-chrome.tabs.onUpdated.addListener(() => {
-  checkTimeLimit();
-});
-
-// Handle new tab creation
+// Handle new tabs being created
 chrome.tabs.onCreated.addListener((tab) => {
   // Check if time limit has been reached
   if (timeLimit && startTime) {
@@ -121,12 +133,7 @@ chrome.tabs.onCreated.addListener((tab) => {
     const elapsed = now - startTime;
     
     if (elapsed >= timeLimit) {
-      console.log('Time limit reached! Redirecting new tab:', tab.id);
-      
-      // Make sure we have the go-outside URL
-      if (!goOutsideUrl) {
-        goOutsideUrl = chrome.runtime.getURL('go-outside.html');
-      }
+      console.log('New tab created after time limit reached:', tab.id);
       
       // Skip chrome:// URLs as they can't be redirected
       if (tab.url && tab.url.startsWith('chrome://')) {
@@ -136,16 +143,20 @@ chrome.tabs.onCreated.addListener((tab) => {
       
       // Redirect the new tab
       try {
-        chrome.tabs.update(tab.id, { url: goOutsideUrl }, (updatedTab) => {
-          if (chrome.runtime.lastError) {
-            console.error('Error redirecting new tab:', chrome.runtime.lastError);
-          } else {
-            console.log('New tab redirected successfully:', updatedTab.id);
-          }
-        });
+        chrome.tabs.update(tab.id, { url: goOutsideUrl });
       } catch (error) {
         console.error('Exception redirecting new tab:', error);
       }
     }
   }
+});
+
+// Check time limit when a tab is activated
+chrome.tabs.onActivated.addListener(() => {
+  checkTimeLimit();
+});
+
+// Check time limit when a tab is updated
+chrome.tabs.onUpdated.addListener(() => {
+  checkTimeLimit();
 }); 

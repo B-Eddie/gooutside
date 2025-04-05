@@ -30,28 +30,25 @@
     }
     
     h1 {
-      color: #2c7a51;
+      color: #2c3e50;
       font-size: 3em;
       margin-bottom: 20px;
     }
     
     .message {
       font-size: 1.5em;
-      line-height: 1.6;
-      color: #333;
+      color: #34495e;
       margin-bottom: 30px;
+      line-height: 1.6;
     }
     
     .suggestions {
       text-align: left;
-      background-color: rgba(255, 255, 255, 0.7);
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 30px;
+      margin-top: 40px;
     }
     
     .suggestions h2 {
-      color: #2c7a51;
+      color: #3498db;
       font-size: 1.8em;
       margin-bottom: 20px;
       text-align: center;
@@ -65,16 +62,16 @@
     .suggestions li {
       margin: 15px 0;
       padding: 15px;
-      background-color: #f8f9fa;
+      background-color: #ecf0f1;
       border-radius: 8px;
       transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 1.2em;
     }
     
     .suggestions li:hover {
       transform: translateX(10px);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      background-color: #e9ecef;
+      background-color: #d5e8f7;
     }
     
     .timer {
@@ -86,8 +83,8 @@
     
     .motivation {
       font-style: italic;
-      color: #555;
-      margin: 20px 0;
+      color: #7f8c8d;
+      margin-top: 30px;
       font-size: 1.2em;
     }
   </style>
@@ -100,9 +97,7 @@
       <p>Take a break and enjoy the outdoors!</p>
     </div>
     
-    <div class="motivation">
-      "The best way to get rid of a temptation is to yield to it." - Oscar Wilde
-    </div>
+    <div class="timer" id="timer">Time to go outside!</div>
     
     <div class="suggestions">
       <h2>Some ideas for outdoor activities:</h2>
@@ -113,39 +108,36 @@
         <li>Play with your pet</li>
         <li>Do some gardening</li>
         <li>Go for a hike</li>
-        <li>Play a sport</li>
+        <li>Play outdoor sports</li>
+        <li>Visit a local attraction</li>
         <li>Take photographs of nature</li>
         <li>Have a conversation with someone face-to-face</li>
-        <li>Read a book outside</li>
       </ul>
     </div>
     
-    <div class="timer" id="timeElapsed">
-      Time spent on screens: <span id="elapsedTime">0:00:00</span>
+    <div class="motivation">
+      <p>"The best way to get started is to quit talking and begin doing." - Walt Disney</p>
     </div>
   </div>
   
   <script>
-    // Calculate and display elapsed time
-    function updateElapsedTime() {
-      chrome.storage.local.get(['startTime'], function(data) {
-        if (data.startTime) {
-          const now = Date.now();
-          const elapsed = now - data.startTime;
-          
-          const hours = Math.floor(elapsed / (60 * 60 * 1000));
-          const minutes = Math.floor((elapsed % (60 * 60 * 1000)) / (60 * 1000));
-          const seconds = Math.floor((elapsed % (60 * 1000)) / 1000);
-          
-          document.getElementById('elapsedTime').textContent = 
-            `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-      });
-    }
+    // Add a simple animation to the timer
+    const timerElement = document.getElementById('timer');
+    const messages = [
+      "Time to go outside!",
+      "Step away from the screen!",
+      "Nature is calling!",
+      "Fresh air awaits!",
+      "Your eyes need a break!",
+      "The world is waiting!"
+    ];
     
-    // Update elapsed time every second
-    updateElapsedTime();
-    setInterval(updateElapsedTime, 1000);
+    let messageIndex = 0;
+    
+    setInterval(() => {
+      timerElement.textContent = messages[messageIndex];
+      messageIndex = (messageIndex + 1) % messages.length;
+    }, 3000);
   </script>
 </body>
 </html> 

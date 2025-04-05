@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Extension Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Extension Test Page</h1>
+  <p>This page helps test if the extension is working correctly.</p>
+  
+  <div>
+    <button id="checkTimeLimit">Check Time Limit</button>
+    <button id="setShortLimit">Set 10 Second Limit</button>
+    <button id="openNewTab">Open New Tab</button>
+  </div>
+  
+  <div id="status">
+    <p>Status: <span id="statusText">Ready</span></p>
+    <p>Time Limit: <span id="timeLimitText">Not set</span></p>
+    <p>Start Time: <span id="startTimeText">Not set</span></p>
+    <p>Time Remaining: <span id="timeRemainingText">--:--:--</span></p>
+  </div>
+  
+  <script>
+    // Check time limit
+    document.getElementById('checkTimeLimit').addEventListener('click', function() {
+      chrome.storage.local.get(['timeLimit', 'startTime'], function(data) {
+        const statusText = document.getElementById('statusText');
+        const timeLimitText = document.getElementById('timeLimitText');
+        const startTimeText = document.getElementById('startTimeText');
+        const timeRemainingText = document.getElementById('timeRemainingText');
+        
+        if (data.timeLimit && data.startTime) {
+          timeLimitText.textContent = data.timeLimit + ' ms';
+          startTimeText.textContent = new Date(data.startTime).toLocaleString();
+          
+          const now = Date.now();
+          const elapsed = now - data.startTime;
+          const remaining = Math.max(0, data.timeLimit - elapsed);
+          
+          const hours = Math.floor(remaining / (60 * 60 * 1000));
+          const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+          const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+          
+          timeRemainingText.textContent = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          
+          if (elapsed >= data.timeLimit) {
+            statusText.textContent = 'Time limit reached!';
+            statusText.style.color = 'red';
+          } else {
+            statusText.textContent = 'Time limit active';
+            statusText.style.color = 'green';
+          }
+        } else {
+          statusText.textContent = 'No time limit set';
+          statusText.style.color = 'black';
+          timeLimitText.textContent = 'Not set';
+          startTimeText.textContent = 'Not set';
+          timeRemainingText.textContent = '--:--:--';
+        }
+      });
+    });
+    
+    // Set a short time limit (10 seconds)
+    document.getElementById('setShortLimit').addEventListener('click', function() {
+      const timeLimit = 10 * 1000; // 10 seconds
+      const startTime = Date.now();
+      
+      chrome.storage.local.set({
+        timeLimit: timeLimit,
+        startTime: startTime
+      }, function() {
+        chrome.runtime.sendMessage({
+          action: 'setTimeLimit',
+          timeLimit: timeLimit,
+          startTime: startTime
+        }, function(response) {
+          document.getElementById('statusText').textContent = '10 second limit set!';
+          document.getElementById('statusText').style.color = 'green';
+          
+          // Update the display
+          document.getElementById('timeLimitText').textContent = timeLimit + ' ms';
+          document.getElementById('startTimeText').textContent = new Date(startTime).toLocaleString();
+          document.getElementById('timeRemainingText').textContent = '00:00:10';
+        });
+      });
+    });
+    
+    // Open a new tab
+    document.getElementById('openNewTab').addEventListener('click', function() {
+      chrome.tabs.create({ url: 'https://www.google.com' });
+    });
+  </script>
+</body>
+</html> 
